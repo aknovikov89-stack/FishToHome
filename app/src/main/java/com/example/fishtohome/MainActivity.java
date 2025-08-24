@@ -18,15 +18,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.webkit.CookieManager;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
     private WebView myWebView;
-    private List<String> previous = new ArrayList<String>();
-    private String mLastUrl;
-
-
+    private HistoryManager historyManager;
+    SharedPreferences sharedPref;
 
 
 
@@ -51,12 +52,10 @@ public class MainActivity extends AppCompatActivity {
         myWebView.getSettings().setBuiltInZoomControls(true);
         myWebView.getSettings().setUseWideViewPort(true);
         myWebView.getSettings().setJavaScriptEnabled(true);
-        WebBackForwardList history = myWebView.copyBackForwardList();
-        for (int i = 0; i < history.getSize(); i++) {
-            WebHistoryItem item = history.getItemAtIndex(i);
-            // Получить название страницы
-            // Другие манипуляции...
-        }
+        historyManager = new HistoryManager(this);
+        historyManager.integrateWithWebView(myWebView);
+        WebBackForwardList historyhi = myWebView.copyBackForwardList();
+
         myWebView.loadUrl("https://google.com/");
         myWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
